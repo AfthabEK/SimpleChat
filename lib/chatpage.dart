@@ -52,9 +52,9 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final firestore = FirebaseFirestore.instance;
     return Scaffold(
-      backgroundColor: Colors.indigo.shade400,
+      backgroundColor: Colors.teal.shade400,
       appBar: AppBar(
-        backgroundColor: Colors.indigo.shade400,
+        backgroundColor: Colors.teal.shade400,
         title: Text(widget.name),
         elevation: 0,
         actions: [
@@ -158,14 +158,14 @@ class _ChatPageState extends State<ChatPage> {
                           child: Text(
                             'No conversation found',
                             style: Styles.h1()
-                                .copyWith(color: Colors.indigo.shade400),
+                                .copyWith(color: Colors.teal.shade400),
                           ),
                         );
                       }
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(
-                          color: Colors.indigo,
+                          color: Colors.teal,
                         ),
                       );
                     }
