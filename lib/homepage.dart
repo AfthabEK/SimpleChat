@@ -8,7 +8,8 @@ import 'comps/styles.dart';
 import 'comps/widgets.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  var x;
+  MyHomePage({Key? key, required this.x}) : super(key: key);
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -121,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                             id: user,
                                                             name: snap
                                                                 .data['name'],
+                                                            x: widget.x,
                                                           );
                                                         },
                                                       ),
@@ -210,6 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                               id: user,
                                                               name: snap
                                                                   .data['name'],
+                                                              x: widget.x,
                                                             );
                                                           },
                                                         ),
@@ -228,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-            ChatWidgets.searchBar(open)
+            ChatWidgets.searchBar(open, widget.x)
           ],
         ),
       ),

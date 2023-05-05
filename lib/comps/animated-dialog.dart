@@ -9,8 +9,9 @@ import '../chatpage.dart';
 class AnimatedDialog extends StatefulWidget {
   final double height;
   final double width;
-
-  const AnimatedDialog({Key? key, required this.height, required this.width})
+  var x;
+  AnimatedDialog(
+      {Key? key, required this.height, required this.width, required this.x})
       : super(key: key);
 
   @override
@@ -98,6 +99,7 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
                                                 return ChatPage(
                                                   id: data[i].id.toString(),
                                                   name: data[i]['name'],
+                                                  x: widget.x,
                                                 );
                                               },
                                             ),

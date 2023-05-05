@@ -89,7 +89,7 @@ class ChatWidgets {
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.all(10),
               child: Text(
-                '$message\n\n$time',
+                check ? '$message\n\n$time' : '$message\n\n$time',
                 style: TextStyle(color: check ? Colors.white : Colors.black),
               ),
               decoration: Styles.messagesCardStyle(check),
@@ -172,12 +172,11 @@ class ChatWidgets {
     );
   }
 
-  static searchBar(
-    bool open,
-  ) {
+  static searchBar(bool open, var x) {
     return AnimatedDialog(
       height: open ? 800 : 0,
       width: open ? 400 : 0,
+      x: x,
     );
   }
 
