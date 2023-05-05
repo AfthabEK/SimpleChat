@@ -26,10 +26,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo.shade400,
+      backgroundColor: Colors.teal,
       appBar: AppBar(
-        backgroundColor: Colors.indigo.shade400,
-        title: const Text('Flash Chat'),
+        backgroundColor: Colors.teal,
+        title: const Text('Simple Chat'),
         elevation: 0,
         centerTitle: true,
         actions: [
@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                   margin: const EdgeInsets.all(0),
                   child: Container(
-                    color: Colors.indigo.shade400,
+                    color: Colors.teal,
                     padding: const EdgeInsets.all(8),
                     height: 160,
                     child: Column(
@@ -120,15 +120,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         builder: (context) {
                                                           return ChatPage(
                                                             id: user,
-                                                            name: snap
-                                                                .data['name'],
+                                                            name: snap.data[
+                                                                        'name'] !=
+                                                                    ''
+                                                                ? snap.data[
+                                                                    'name']
+                                                                : snap.data[
+                                                                    'email'],
                                                             x: widget.x,
                                                           );
                                                         },
                                                       ),
                                                     );
                                                   },
-                                                  name: snap.data['name']);
+                                                  name: snap.data['name'] != ''
+                                                      ? snap.data['name']
+                                                      : snap.data['email']);
                                         });
                                   },
                                 );
@@ -150,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               horizontal: 20, vertical: 20),
                           child: Text(
                             'Contacts',
-                            style: Styles.h1().copyWith(color: Colors.indigo),
+                            style: Styles.h1().copyWith(color: Colors.teal),
                           ),
                         ),
                         Expanded(
@@ -196,7 +203,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                             return !snap.hasData
                                                 ? Container()
                                                 : ChatWidgets.card(
-                                                    title: snap.data['name'],
+                                                    title: snap.data['name'] !=
+                                                            ''
+                                                        ? snap.data['name']
+                                                        : snap.data['email'],
                                                     subtitle: data[i]
                                                         ['last_message'],
                                                     time: DateFormat('hh:mm a')
@@ -210,8 +220,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                                           builder: (context) {
                                                             return ChatPage(
                                                               id: user,
-                                                              name: snap
-                                                                  .data['name'],
+                                                              name: snap.data[
+                                                                          'name'] !=
+                                                                      ''
+                                                                  ? snap.data[
+                                                                      'name']
+                                                                  : snap.data[
+                                                                      'email'],
                                                               x: widget.x,
                                                             );
                                                           },

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'homepage.dart';
+import 'Logics/enc_dec.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:pointycastle/api.dart' as crypto;
 import 'package:fast_rsa/fast_rsa.dart' as fast;
@@ -16,6 +17,28 @@ import 'package:pointycastle/asymmetric/api.dart' as asym;
 import 'package:pointycastle/api.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 import 'package:pointycastle/asymmetric/rsa.dart';
+
+Future<void> addUserWithRSAKeys(String userId) async {
+  // generate RSA key pair
+  RSAKeyPair keyPair = generateRSAKeyPair();
+
+  // create a new document for the user with their ID and RSA keys
+  await FirebaseFirestore.instance
+      .collection('users2')
+      .doc(userId)
+      .set({
+        'publicKey': {
+          'n': keyPair.n,
+          'e': keyPair.e,
+        },
+        'privateKey': {
+          'n': keyPair.n,
+          'd': keyPair.d,
+        },
+      })
+      .then((value) => print('User added with RSA keys'))
+      .catchError((error) => print('Failed to add user: $error'));
+}
 
 var privateKey;
 void main() async {
@@ -47,13 +70,14 @@ class AuthGate extends StatelessWidget {
     var keyPair = await RSA.generate(2048);
     privateKey = keyPair.privateKey;
     var publicKey = keyPair.publicKey;
-
+    RSAKeyPair newpair = generateRSAKeyPair();
     // Encode public and private keys to PEM format
 
     // Save public and private keys to Firebase document
     final userDoc =
         FirebaseFirestore.instance.collection('users').doc(user.uid);
-    await userDoc.set({'public_key': publicKey, 'private_key': privateKey});
+    await userDoc.set({'public_key': publicKey});
+    addUserWithRSAKeys(user.uid);
   }
 
   @override
