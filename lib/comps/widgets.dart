@@ -128,7 +128,7 @@ class ChatWidgets {
 
   static drawer(context) {
     return Drawer(
-      backgroundColor: Colors.indigo.shade400,
+      backgroundColor: Colors.teal.shade400,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 20),

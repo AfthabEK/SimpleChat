@@ -46,8 +46,8 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
           width: widget.width,
           decoration: BoxDecoration(
               color: widget.width == 0
-                  ? Colors.indigo.withOpacity(0)
-                  : Colors.indigo.shade400,
+                  ? Colors.teal.withOpacity(0)
+                  : Colors.teal.shade400,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(widget.width == 0 ? 100 : 0),
                 bottomRight: Radius.circular(widget.width == 0 ? 100 : 0),

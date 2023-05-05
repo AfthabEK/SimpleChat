@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:image/Logics/enc_dec.dart';
 import 'homepage.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:pointycastle/api.dart' as crypto;
@@ -13,9 +14,11 @@ import 'package:fast_rsa/fast_rsa.dart' as fast;
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pointycastle/asymmetric/api.dart' as asym;
-import 'package:pointycastle/api.dart';
+import 'package:pointycastle/api.dart' as pc;
 import 'package:pointycastle/asymmetric/api.dart';
 import 'package:pointycastle/asymmetric/rsa.dart';
+
+import 'dart:math';
 
 var privateKey;
 void main() async {
@@ -77,13 +80,12 @@ class AuthGate extends StatelessWidget {
 }
 
 
+
+
 /*
-
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -166,9 +168,19 @@ class _MyHomePageState extends State<MyHomePage> {
 // method to Encrypt String Password
   void Encrypt() async {
     password = pass.text;
+    String uid = '9gcfLYW5Ach7Jms5WIUqS1aatLJ2';
+    Future<RSAKeyPair> x = getUserRSAKeys(uid);
+    RSAKeyPair y = await x;
+
+    String plaintext = 'hello world';
+    print(plaintext);
+    String ciphertext = encryptString(plaintext, y);
+    print('Encrypted text: $ciphertext');
+
+    String decryptedtext = decryptString(ciphertext, y);
+    print('Decrypted text: $decryptedtext');
 
     // here pass the password entered by user and the key
-    print(encryptedS);
   }
 
 // method to decrypt String Password
@@ -176,8 +188,8 @@ class _MyHomePageState extends State<MyHomePage> {
     print(decryptedS);
   }
 }
-*/
 
+*/
 /*
 
 import 'dart:async';

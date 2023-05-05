@@ -9,6 +9,7 @@ import 'comps/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:fast_rsa/fast_rsa.dart' as fast;
 import 'Logics/enc_dec.dart';
+import 'dart:math';
 
 class ChatPage extends StatefulWidget {
   final String id;
@@ -23,28 +24,10 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  String encrypt(String plaintext, String key, String pubkey) {
-    String ciphertext = '';
-    for (int i = 0; i < plaintext.length; i++) {
-      int charCode = plaintext.codeUnitAt(i);
-      int keyIndex = i % key.length;
-      int keyShift = key.codeUnitAt(keyIndex) - 'a'.codeUnitAt(0);
-      int encryptedCode = (charCode + keyShift * 8) % 256;
-      ciphertext += String.fromCharCode(encryptedCode);
-    }
-    return ciphertext;
-  }
-
-  String decrypt(String ciphertext, String key, String pubkey) {
-    String plaintext = '';
-    for (int i = 0; i < ciphertext.length; i++) {
-      int charCode = ciphertext.codeUnitAt(i);
-      int keyIndex = i % key.length;
-      int keyShift = key.codeUnitAt(keyIndex) - 'a'.codeUnitAt(0);
-      int decryptedCode = (charCode - keyShift * 8) % 256;
-      plaintext += String.fromCharCode(decryptedCode);
-    }
-    return plaintext;
+  String generateRandomKey(int length) {
+    final random = Random();
+    final charCodes = List.generate(length, (_) => random.nextInt(26) + 97);
+    return String.fromCharCodes(charCodes);
   }
 
   var roomId;
@@ -142,10 +125,9 @@ class _ChatPageState extends State<ChatPage> {
                                                     FirebaseAuth.instance
                                                         .currentUser!.uid,
                                                 decrypt(
-                                                    snap.data!.docs[i]
-                                                        ['message'],
-                                                    'fast',
-                                                    ''),
+                                                  snap.data!.docs[i]['message'],
+                                                  'fast',
+                                                ),
                                                 DateFormat('hh:mm a').format(
                                                     snap.data!
                                                         .docs[i]['datetime']
@@ -192,8 +174,8 @@ class _ChatPageState extends State<ChatPage> {
                 String encrypted1 = controller.text.trim();
 
                 String encrypted2 = controller.text;
-                encrypted1 = encrypt(encrypted1, 'fast', pubkey);
-                encrypted2 = encrypt(encrypted2, 'fast', pubkey);
+                encrypted1 = encrypt(encrypted1, 'fast');
+                encrypted2 = encrypt(encrypted2, 'fast');
 
                 if (roomId != null) {
                   Map<String, dynamic> data = {
@@ -223,6 +205,7 @@ class _ChatPageState extends State<ChatPage> {
                     ],
                     'last_message': encrypted2,
                     'last_message_time': DateTime.now(),
+                    'xk': generateRandomKey(30)
                   }).then((value) async {
                     value.collection('messages').add(data);
                   });
