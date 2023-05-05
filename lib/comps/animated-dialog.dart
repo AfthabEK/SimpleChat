@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image/comps/widgets.dart';
+import 'widgets.dart';
 import 'package:intl/intl.dart';
 import '../chatpage.dart';
 
@@ -18,7 +18,7 @@ class AnimatedDialog extends StatefulWidget {
 }
 
 class _AnimatedDialogState extends State<AnimatedDialog> {
-  final firestore= FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
   final controller = TextEditingController();
   String search = '';
   bool show = false;
@@ -58,47 +58,55 @@ class _AnimatedDialogState extends State<AnimatedDialog> {
                   ? null
                   : Column(
                       children: [
-                        ChatWidgets.searchField(
-                          onChange: (a){
-                            setState(() {
-                              search = a;
-                            });
-                          }
-                        ),
+                        ChatWidgets.searchField(onChange: (a) {
+                          setState(() {
+                            search = a;
+                          });
+                        }),
                         Expanded(
-
                           child: Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: StreamBuilder(
-                              stream: firestore.collection('Users').snapshots(),
-                              builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
-                                List data = !snapshot.hasData? []: snapshot.data!.docs.where((element) => element['email'].toString().contains(search) ||  element['email'].toString().contains(search)).toList();
-                                return ListView.builder(
-                                  itemCount: data.length,
-                                  itemBuilder: (context, i) {
-                                    Timestamp time = data[i]['date_time'];
-                                    return ChatWidgets.card(
-                                      title: data[i]['name'],
-                                      time: DateFormat('EEE hh:mm').format(time.toDate()),
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return  ChatPage(
-                                                id: data[i].id.toString(),
-                                                name: data[i]['name'],
-
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                );
-                              }
-                            ),
+                                stream:
+                                    firestore.collection('Users').snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  List data = !snapshot.hasData
+                                      ? []
+                                      : snapshot.data!.docs
+                                          .where((element) =>
+                                              element['email']
+                                                  .toString()
+                                                  .contains(search) ||
+                                              element['email']
+                                                  .toString()
+                                                  .contains(search))
+                                          .toList();
+                                  return ListView.builder(
+                                    itemCount: data.length,
+                                    itemBuilder: (context, i) {
+                                      Timestamp time = data[i]['date_time'];
+                                      return ChatWidgets.card(
+                                        title: data[i]['name'],
+                                        time: DateFormat('EEE hh:mm')
+                                            .format(time.toDate()),
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return ChatPage(
+                                                  id: data[i].id.toString(),
+                                                  name: data[i]['name'],
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                }),
                           ),
                         ),
                       ],
